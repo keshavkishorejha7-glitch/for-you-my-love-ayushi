@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Ayushi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff85a2;
+            --dark-pink: #fb6f92;
+            --soft-white: #fff5f7;
+            --gold: #d4af37;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle, #fff5f7 0%, #ffeef2 100%);
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Background Sparkle Effect */
+        .sparkle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            pointer-events: none;
+            animation: twinkle 2s infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+
+        .slide {
+            display: none;
+            height: 100vh;
+            width: 100vw;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            animation: slideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .active-slide {
+            display: flex;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* The Gate / Grand Entrance */
+        .gate-container {
+            perspective: 1500px;
+            width: 320px;
+            height: 450px;
+            position: relative;
+        }
+        .gate-door {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #fb6f92 0%, #ff85a2 100%);
+            border: 4px solid var(--soft-white);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            z-index: 10;
+            transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .gate-door::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 40px;
+            background: var(--gold);
+            border-radius: 5px;
+        }
+        .left-door { left: 0; transform-origin: left; border-right: 2px solid rgba(255,255,255,0.3); }
+        .left-door::after { right: 10px; }
+        .right-door { right: 0; transform-origin: right; border-left: 2px solid rgba(255,255,255,0.3); }
+        .right-door::after { left: 10px; }
+
+        .gate-container.open .left-door { transform: rotateY(-130deg); }
+        .gate-container.open .right-door { transform: rotateY(130deg); }
+
+        .gate-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: inset 0 0 50px rgba(251, 111, 146, 0.1);
+        }
+
+        /* Decorative Card */
+        .letter-card {
+            background: white;
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 500px;
+            position: relative;
+            border: 1px solid #eee;
+            background-image: radial-gradient(#fb6f92 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
+            background-color: #fff;
+        }
+        .letter-card::before {
+            content: '';
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 2px solid #ffc2d1;
+            pointer-events: none;
+        }
+
+        /* Floating elements */
+        .floating-item {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatUp 5s linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Custom buttons */
+        .btn-fancy {
+            background: linear-gradient(to right, #fb6f92, #ff85a2);
+            color: white;
+            padding: 12px 35px;
+            border-radius: 30px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(251, 111, 146, 0.4);
+            transition: all 0.3s;
+        }
+        .btn-fancy:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(251, 111, 146, 0.6);
+        }
+
+        .gallery-item {
+            transition: all 0.5s;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .gallery-item:hover {
+            transform: rotate(0deg) scale(1.1) !important;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="decoration-layer"></div>
+
+    <!-- Slide 1: The Grand Gate -->
+    <div id="slide1" class="slide active-slide">
+        <h2 class="text-4xl font-bold text-[#fb6f92] mb-12 font-[Dancing Script]">A Message for Ayushi</h2>
+        <div class="gate-container" id="mainGate" onclick="openGate()">
+            <div class="gate-door left-door"></div>
+            <div class="gate-door right-door"></div>
+            <div class="gate-content">
+                <i class="fas fa-heart text-5xl text-[#fb6f92] animate-bounce"></i>
+                <p class="mt-4 font-semibold text-gray-400">Please Step Inside...</p>
+            </div>
+        </div>
+        <p class="mt-10 text-[#fb6f92] font-medium tracking-widest animate-pulse">TAP THE DOORS</p>
+    </div>
+
+    <!-- Slide 2: The Formal Apology Letter -->
+    <div id="slide2" class="slide">
+        <div class="letter-card">
+            <h1 class="text-4xl font-bold text-[#fb6f92] mb-6 font-[Dancing Script]">My Dearest Ayushi,</h1>
+            <div class="text-gray-700 leading-relaxed text-left font-light italic">
+                <p class="mb-4">
+                    I've spent the last few days reflecting on my actions. I realize now that my behavior wasn't just a mistake—it was a failure to show you the respect and love you truly deserve.
+                </p>
+                <p class="mb-4">
+                    You are the most precious person in my world, and seeing you hurt because of me is the worst feeling imaginable. I am truly, deeply sorry for everything.
+                </p>
+                <p>
+                    Please give me a chance to make it up to you. I promise to be the person you fell in love with, every single day.
+                </p>
+            </div>
+            <div class="mt-8 text-right font-[Dancing Script] text-2xl text-[#fb6f92]">
+                With all my love...
+            </div>
+        </div>
+        <button class="btn-fancy mt-10" onclick="nextSlide(3)">Our Beautiful Moments <i class="fas fa-chevron-right ml-2"></i></button>
+    </div>
+
+    <!-- Slide 3: Decorative Memory Wall -->
+    <div id="slide3" class="slide">
+        <h2 class="text-3xl font-bold text-[#fb6f92] mb-10 font-[Playfair Display]">You are my everything...</h2>
+        <div class="grid grid-cols-2 gap-6 p-4">
+            <div class="gallery-item bg-[#ffeef2] w-40 h-40 flex items-center justify-center rounded transform -rotate-6" style="transform: rotate(-6deg)">
+                <i class="fas fa-heart text-4xl text-[#fb6f92]"></i>
+            </div>
+            <div class="gallery-item bg-white w-40 h-40 flex items-center justify-center rounded transform rotate-3" style="transform: rotate(3deg)">
+                <i class="fas fa-star text-4xl text-yellow-400"></i>
+            </div>
+            <div class="gallery-item bg-white w-40 h-40 flex items-center justify-center rounded transform rotate-6" style="transform: rotate(6deg)">
+                <i class="fas fa-infinity text-4xl text-blue-400"></i>
+            </div>
+            <div class="gallery-item bg-[#ffeef2] w-40 h-40 flex items-center justify-center rounded transform -rotate-3" style="transform: rotate(-3deg)">
+                <i class="fas fa-crown text-4xl text-[#fb6f92]"></i>
+            </div>
+        </div>
+        <p class="mt-10 font-medium text-gray-500 max-w-xs">Every second spent with you is a memory I treasure forever.</p>
+        <button class="btn-fancy mt-8" onclick="nextSlide(4)">The Big Question <i class="fas fa-magic ml-2"></i></button>
+    </div>
+
+    <!-- Slide 4: Final Forgiveness -->
+    <div id="slide4" class="slide">
+        <div class="relative">
+            <i class="fas fa-dove text-6xl text-[#fb6f92] mb-6"></i>
+            <h1 class="text-5xl font-bold text-[#fb6f92] mb-4 font-[Dancing Script]">Will you forgive me?</h1>
+            <p class="text-gray-500 mb-10">I promise to make you smile again.</p>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <button class="bg-[#fb6f92] hover:bg-[#ff85a2] text-white px-12 py-4 rounded-full font-bold text-xl transition transform hover:scale-110 shadow-xl" onclick="forgive()">YES, I DO!</button>
+                <button id="no-btn" class="bg-gray-200 text-gray-500 px-10 py-3 rounded-full font-semibold transition-all duration-100" onmouseover="moveNo()">Not yet</button>
+            </div>
+
+            <div id="celebration" class="hidden mt-12 animate-bounce">
+                <h2 class="text-3xl font-[Dancing Script] text-[#fb6f92]">I love you so much, Ayushi! ❤️</h2>
+                <p class="text-gray-400 mt-2">You've made me the happiest person again.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Decorative background elements
+        const decorLayer = document.getElementById('decoration-layer');
+        const items = ['🌸', '💖', '✨', '🌹', '💕'];
+        
+        function createDecor() {
+            const item = document.createElement('div');
+            item.className = 'floating-item';
+            item.innerHTML = items[Math.floor(Math.random() * items.length)];
+            item.style.left = Math.random() * 100 + 'vw';
+            item.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            item.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            decorLayer.appendChild(item);
+            setTimeout(() => item.remove(), 7000);
+        }
+        setInterval(createDecor, 400);
+
+        // Add static sparkles
+        for(let i=0; i<30; i++) {
+            const s = document.createElement('div');
+            s.className = 'sparkle';
+            s.style.width = s.style.height = Math.random() * 4 + 'px';
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.top = Math.random() * 100 + 'vh';
+            s.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(s);
+        }
+
+        // Logic
+        function openGate() {
+            document.getElementById('mainGate').classList.add('open');
+            setTimeout(() => {
+                nextSlide(2);
+            }, 1600);
+        }
+
+        function nextSlide(n) {
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active-slide'));
+            document.getElementById('slide' + n).classList.add('active-slide');
+        }
+
+        function moveNo() {
+            const btn = document.getElementById('no-btn');
+            const x = Math.random() * (window.innerWidth - 150);
+            const y = Math.random() * (window.innerHeight - 50);
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+            btn.style.zIndex = '1000';
+        }
+
+        function forgive() {
+            document.getElementById('celebration').classList.remove('hidden');
+            document.getElementById('no-btn').style.display = 'none';
+            // Trigger massive celebration
+            for(let i=0; i<50; i++) {
+                setTimeout(createDecor, i * 100);
+            }
+        }
+    </script>
+</body>
+</html>
